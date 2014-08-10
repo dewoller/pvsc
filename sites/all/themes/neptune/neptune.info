@@ -1,0 +1,74 @@
+; The name, description, and screenshot used for this theme on the 'Appearance'
+; page ('/admin/appearance').
+name        = neptune
+description = A clean, single or multi-column Zen sub-theme.
+screenshot  = screenshot.png
+
+; This theme is compatible with Drupal 7 core and is a Zen sub-theme.
+core        = 7.x
+base theme  = zen
+
+; Remove the system's menu and message styling since Zen has its own.
+stylesheets[all][] = system.menus.css
+stylesheets[all][] = system.messages.css
+stylesheets[all][] = system.theme.css
+
+; Add our stylesheet.
+stylesheets[all][] = css/styles.css
+
+; Add our JavaScript.
+scripts[] = js/script.js
+
+; Regions.
+regions[header]         = Header
+regions[navigation]     = Navigation bar
+regions[highlighted]    = Highlighted
+regions[help]           = Help
+regions[content]        = Content
+regions[sidebar_first]  = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer]         = Footer
+regions[bottom]         = Page bottom
+
+; The page_top and page_bottom regions are hidden, which means they will not
+; show up on the blocks administration page. But they are required in order for
+; the html.tpl.php to work properly, so do not delete them.
+regions[page_top]       = Page top
+regions[page_bottom]    = Page bottom
+
+; Various page elements output by the theme can be toggled on and off. The
+; "features" control which of these check boxes display on the
+; admin/appearance config page. This is useful for suppressing check boxes
+; for elements not used by your sub-theme. To suppress a check box, omit the
+; entry for it below. See the Drupal 7 Theme Guide for more info:
+; https://drupal.org/node/171205#features
+features[] = logo
+features[] = name
+features[] = slogan
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = favicon
+features[] = main_menu
+features[] = secondary_menu
+
+; Set the default values of settings on the theme-settings.php form.
+settings[zen_breadcrumb]           = yes
+settings[zen_breadcrumb_separator] = ' › '
+settings[zen_breadcrumb_home]      = 1
+settings[zen_breadcrumb_trailing]  = 0
+settings[zen_breadcrumb_title]     = 1
+settings[zen_skip_link_anchor]     = main-menu
+settings[zen_skip_link_text]       = Jump to navigation
+settings[zen_html5_respond_meta][] = respond
+settings[zen_html5_respond_meta][] = html5
+settings[zen_html5_respond_meta][] = meta
+settings[zen_rebuild_registry]     = 1
+settings[zen_wireframes]           = 0
+settings[neptune_max_width]        = 1000
+
+; Information added by Drupal.org packaging script on 2014-04-06
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "neptune"
+datestamp = "1396807153"
+

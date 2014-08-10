@@ -1,0 +1,106 @@
+//
+// Initialization partial
+//
+// To make it easier to use all variables and mixins in any Sass file in this
+// theme, each .scss file has a @import "init" declaration. And this _init.scss
+// file is in charge of importing all the other partials needed for the theme.
+//
+// This initialization partial is organized in this way:
+// - First we set any shared Sass variables.
+// - Next we import Compass plug-ins (Sass mixin libraries).
+// - Last we define our custom mixins for this theme.
+//
+
+
+// =============================================================================
+// Variables
+// =============================================================================
+
+//
+// Legacy IE support
+//
+// These variables are used by many mixins to add additional CSS to support
+// specific versions of IE or specific vendor prefixes.
+//
+// IE6-7 don't support box-sizing: border-box. We can fix this in 1 of 3 ways:
+// - Drop support for IE 6/7. :-) Set $legacy-support-for-ie6
+//   and $legacy-support-for-ie7 to false.
+// - (Preferred) Install the box-sizing polyfill and set the variable below to
+//   the absolute path URL to the boxsizing.htc file.
+//   @see https://github.com/Schepp/box-sizing-polyfill
+//   $box-sizing-polyfill-path: "/path/to/boxsizing.htc";
+// - Use the same CSS unit for grid and gutter width in resonsive-sidebars.scss
+//   (use px for both or use % for both) and set the box-sizing variable to content-box.
+//
+// Zen does not require special handling for IE8 or later. But Compass uses that
+// variable for a couple edge cases. We include it for completeness sake. See
+// the documentation at http://compass-style.org/reference/compass/support/
+$legacy-support-for-ie6: false;
+$legacy-support-for-ie7: false;
+$legacy-support-for-ie8: true;
+
+
+//
+// Font faces, stacks and sizes.
+//
+
+// Compass' vertical_rhythm extension is a powerful tool to set up a vertical
+// rhythm for your entire page. You can see some of its mixins and functions in
+// use in the normalize.scss file.
+// @see http://compass-style.org/reference/compass/typography/vertical_rhythm/
+
+$base-font-size:   16px; // The font size set on the root html element.
+$base-line-height: 24px; // This line-height determines the basic unit of vertical rhythm.
+
+$h1-font-size: 2 * $base-font-size;
+$h2-font-size: 2 * $base-font-size;
+$h3-font-size: 1 * $base-font-size;
+$h4-font-size: 1 * $base-font-size;
+$h5-font-size: 1 * $base-font-size;
+$h6-font-size: 1 * $base-font-size;
+
+// For an explanation of why "sans-serif" is at the end of this list, see
+// http://meyerweb.com/eric/thoughts/2010/02/12/fixed-monospace-sizing/
+$courier: "Courier New", "DejaVu Sans Mono", monospace, sans-serif;
+
+// Now create some variables for the font stacks we want to use on this site.
+$base-font-family: 'Istok Web', Arial; // Istok is a Google web font.
+$title-font-family: 'Montserrat', Arial; // Montserrat is a Google web font.
+$font-monospace: $courier;
+
+//
+// Colors, etc.
+//
+
+// The amount lists, blockquotes and comments are indented.
+$indent-amount: 30px;
+
+// The height of the navigation container.
+$nav-height: 11em;
+
+// Tab styling.
+$tabs-container-bg: #fff;
+$tabs-border: #bbb;
+
+// A one pixel line used in a number of places throughout Neptune.
+$divider: 1px solid #dfdfdf;
+
+// =============================================================================
+// Partials to be shared with all .scss files.
+// =============================================================================
+
+// Add Compass' IE and vendor prefix support variables.
+@import "compass/support";
+// Better than Drupal's clearfix.
+@import "compass/utilities/general/clearfix";
+// See http://compass-style.org/help/tutorials/spriting/
+@import "compass/utilities/sprites";
+// Use one CSS3 mixin instead of multiple vendor prefixes.
+@import "compass/css3";
+// Helps set up a vertical rhythm.
+@import "compass/typography/vertical_rhythm";
+// Add the Zen Grids responsive layout mixins.
+@import "zen";
+
+// Now we add our custom helper mixins.
+@import "mixins";
