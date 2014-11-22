@@ -50,7 +50,7 @@
   min-width: 1px;
 }
 .sf-sub-indicator {
-  background: url('../images/arrows-ffffff.png') no-repeat -10px -100px;
+  background: url('../images/arrows-777777.png') no-repeat -10px -100px;
   display: block;
   height: 10px;
   overflow: hidden;
@@ -120,7 +120,7 @@ li.sfHover > a > .sf-sub-indicator {
 .sf-menu.rtl .sf-sub-indicator {
   left: 0.75em;
   right: auto;
-  background: url('../images/arrows-ffffff-rtl.png') no-repeat -10px -100px;
+  background: url('../images/arrows-777777-rtl.png') no-repeat -10px -100px;
 }
 .sf-menu.rtl a > .sf-sub-indicator {
   top: 0.8em;
@@ -225,4 +225,26 @@ li.sfHover > a > .sf-sub-indicator {
   -moz-border-radius-topleft: 0;
   -webkit-border-top-left-radius: 0;
   -webkit-border-bottom-right-radius: 0;
+}
+
+
+/* For the actual menu bar */
+#menu-bar {
+  background: #FFF;
+}
+
+/* For the drop list items background */
+ul.sf-menu.sf-style-none li li {
+    background: #FFF;
+}
+
+/* The hover color CSS is bit more verbose... */
+ul.sf-menu.sf-style-none li:hover,
+ul.sf-menu.sf-style-none li.sfHover,
+ul.sf-menu.sf-style-none li.active a,
+ul.sf-menu.sf-style-none a:focus,
+ul.sf-menu.sf-style-none a:hover,
+ul.sf-menu.sf-style-none a:active,
+ul.sf-menu.sf-navbar.sf-style-none li li {
+  background: #EFF;
 }
