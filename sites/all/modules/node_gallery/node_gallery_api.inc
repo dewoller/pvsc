@@ -1018,6 +1018,48 @@ function node_gallery_api_get_gallery_list($type, $uid = NULL) {
 
 
 /**
+ * Helper function to sort items by Datetime
+ *
+ * @param object $oa
+ *   The left term of the sorting-comparison. Must have an original_DateTime
+ *   member.
+ * @param object $ob
+ *   Idem as $oa, being the right term.
+ *
+ * @return int
+ *   Return 0 if the original_DateTime member of each given objects are equal
+ *   -1 if oa's original_DateTime is smaller
+ *   +1 else
+ */
+function node_gallery_api_original_datetime_chronological_sort($oa, $ob) {
+  $a = $oa->original_DateTime;
+  $b = $ob->original_DateTime;
+  if ($a == $b) {
+    return 0;
+  }
+  return $a < $b ? -1 : 1;
+}
+
+/**
+ * Returns the original date and time creation of associated item_file from EXIF data
+ *
+ * @param object $file
+ *
+ * @return DateTime
+ *   Or NULL
+ */
+
+function node_gallery_api_original_datetime_from_exif($item) {
+  if (!empty($item->node_gallery['item_file']['uri']) && !empty($item->node_gallery['item_file']['type']) && $item->node_gallery['item_file']['type'] == 'image') {
+    $exif = exif_read_data(drupal_realpath($item->node_gallery['item_file']['uri']));
+    if (!empty($exif['DateTimeOriginal'])) {
+      return new DateTime($exif['DateTimeOriginal']);
+    }
+  }
+  return NULL;
+}
+
+/**
  * Metadata Controller for Node Gallery Relationships
  */
 class NodeGalleryRelationshipMetadataController extends EntityDefaultMetadataController {

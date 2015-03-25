@@ -73,3 +73,6 @@ table.item-navigator td.item-navigator-gallery-link {width:20%; text-align:right
     -ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
     filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+#upload-attachments td .description {
+  white-space: normal;
+}

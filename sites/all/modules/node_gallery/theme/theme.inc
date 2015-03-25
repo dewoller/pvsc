@@ -225,11 +225,20 @@ function theme_node_gallery_api_sort_items_form($variables) {
     t('Published'),
     t('Weight'),
   );
+  if (variable_get('node_gallery_api_display_exif_creation_date', FALSE)) {
+    array_splice($header, 3, 0, t('Creation date'));
+  }
   $i = 0;
   foreach ($form['#images'] as $image) {
     $published = ($image['status']) ? t('Yes') : t('No');
-    $file_object = (object) $image['file_object'];
-    $file_view = file_view($file_object, 'node_gallery_api_admin_thumbnail');
+    if (!empty($image['file_object'])) {
+      $file_object = (object) $image['file_object'];
+      $file_view = file_view($file_object, 'node_gallery_api_admin_thumbnail');
+    }
+    else {
+      $file_view = '';
+    }
+
     $row = array(
       // The placeholder for the tabledrag icon.
       '',
@@ -241,6 +250,10 @@ function theme_node_gallery_api_sort_items_form($variables) {
       // The weight drop down.
       drupal_render($form['images-sort-' . $i]),
     );
+    if (variable_get('node_gallery_api_display_exif_creation_date', FALSE)) {
+      $exif_created = isset($image['exif_created']) ? format_date($image['exif_created']->getTimestamp(), 'short') : t('Unavailable');
+      array_splice($row, 3, 0, $exif_created);
+    }
     $rows[] = array(
       'data' => $row,
       'class' => array('draggable'),

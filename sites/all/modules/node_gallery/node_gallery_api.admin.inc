@@ -523,6 +523,20 @@ function node_gallery_api_settings_form($form, &$form_state) {
     '#default_value' => variable_get('node_gallery_api_keyboard_shortcuts', FALSE),
     '#description' => t('When checked, users can press the left and right arrow keys to move between gallery items.'),
   );
+  $form['node_gallery_api_misc']['node_gallery_api_display_exif_creation_date'] = array(
+    '#type' => 'checkbox',
+    '#weight' => 3,
+    '#title' => t('Display creation date from EXIF data in Sort Items tab?'),
+    '#default_value' => variable_get('node_gallery_api_display_exif_creation_date', FALSE),
+    '#description' => t('When checked, you get an additional column in Sort Items tab, showing EXIF original creation date and time of the photo is available.'),
+  );
+  $form['node_gallery_api_misc']['node_gallery_api_activate_chronological_sorting_button'] = array(
+    '#type' => 'checkbox',
+    '#weight' => 4,
+    '#title' => t('Activate the chronological order sorting feature in Sort Items tab?'),
+    '#default_value' => variable_get('node_gallery_api_activate_chronological_sorting_button', FALSE),
+    '#description' => t('When checked, you get an additional button in Sort Items tab, allowing to set shown images in chronological order, from JPEG embeded EXIF data.'),
+  );
 
   // TODO: Recreate wizard interface.
   // $form['#submit'] = array('node_gallery_api_settings_menu_rebuild');

@@ -65,7 +65,11 @@ function node_gallery_api_sort_items_form($form, $form_state, $gallery, $no_jque
       'filepath' => isset($image->node_gallery['item_file_url']) ? $image->node_gallery['item_file_url'] : NULL,
       'file_object' => isset($image->node_gallery['item_file']) ? $image->node_gallery['item_file'] : NULL,
     );
+    if (variable_get('node_gallery_api_display_exif_creation_date', FALSE)) {
+      $form['#images'][$i]['exif_created'] = node_gallery_api_original_datetime_from_exif($image);
+    }
   }
+
   $original_sort = implode($original_sort, ',');
   $form['original_sort'] = array(
     '#type' => 'hidden',
@@ -87,12 +91,78 @@ function node_gallery_api_sort_items_form($form, $form_state, $gallery, $no_jque
     '#type' => 'submit',
     '#value' => t('Save custom sorting'),
   );
+  if (variable_get('node_gallery_api_activate_chronological_sorting_button', FALSE)) {
+    $form['chronological_sort'] = array(
+      '#type' => 'submit',
+      '#value' => t('Set in chronological order'),
+      '#submit' => array('node_gallery_api_sort_items_form_set_chronological_sorting'),
+    );
+  }
   $form['remove'] = array(
     '#type' => 'submit',
     '#value' => t('Restore default sorting'),
     '#submit' => array('node_gallery_api_sort_items_form_remove_weights_submit'),
   );
   return $form;
+}
+
+/**
+ * Submit function to set image weights reflecting chronological order of their making
+ */
+function node_gallery_api_sort_items_form_set_chronological_sorting($form, &$form_state) {
+  $images = array();
+  $ngid = $form_state['values']['ngid'];
+  $gallery = node_load($ngid);
+  $items = node_gallery_api_get_items($gallery, FALSE, FALSE);
+  $no_exif_count = 0;
+  $exif = null;
+
+  // Get exif creation DateTime
+  foreach ($items as $item) {
+    $item->original_DateTime = node_gallery_api_original_datetime_from_exif($item);
+    if (!isset($item->original_DateTime)) {
+      if (user_access('access site reports')) {
+        drupal_set_message(t("Unable to find creation date in exif data for: @title", array('@title' => $item->title)));
+      }
+      $no_exif_count++;
+      if (!empty($item->node_gallery['item_file']['timestamp'])) {
+        $item->original_DateTime = $item->node_gallery['item_file']['timestamp'];
+      }
+      else {
+        $item->original_DateTime = $item->created;
+      }
+    }
+  }
+
+  if ($no_exif_count) {
+    drupal_set_message(t("Unable to find creation date in exif data for: @count media(s)", array('@count' => $no_exif_count)));
+    if ($no_exif_count == count($items)) {
+      drupal_set_message(t("The order of the images was left unchanged."));
+      return;
+    }
+  }
+
+  usort($items, 'node_gallery_api_original_datetime_chronological_sort');
+
+  $i = 0;
+  foreach ($items as $item) {
+    $images[] = array(
+      'nid' => $item->nid,
+      'ngid' => $ngid,
+      'weight' => $i,
+    );
+    $i++;
+  }
+  $batch = array(
+    'title' => t('Updating image order'),
+    'operations' => array(array('node_gallery_api_batch_sorting_callback', array($images))),
+    'finished' => 'node_gallery_api_batch_sorting_finished',
+    'file' => drupal_get_path('module', 'node_gallery_api') . '/node_gallery_api.inc',
+    'init_message' => t('New image positions are being calculated.'),
+    'progress_message' => t('Processing image sorting.'),
+    'error_message' => t('Image sorting has encountered an error.'),
+  );
+  batch_set($batch);
 }
 
 /**
@@ -377,7 +447,7 @@ function node_gallery_api_manage_items_submit(&$form, &$form_state) {
         $op_images['update'][] = $image_node;
       }
     }
-    if ($form_values['rotate']) {
+    if (!empty($form_values['rotate'])) {
       $allowed_degrees = array('90', '270', '180');
       $degrees = (int) $form_values['rotate'];
       if (in_array($degrees, $allowed_degrees)) {

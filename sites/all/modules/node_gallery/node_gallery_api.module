@@ -192,6 +192,19 @@ function node_gallery_api_menu() {
 }
 
 /**
+ * Implements hook_admin_paths().
+ */
+function node_gallery_api_admin_paths() {
+  $paths = array(
+    'node/*/sort' => TRUE,
+    'node/*/upload' => TRUE,
+    'node/*/items' => TRUE,
+    'node/*/manage' => TRUE
+  );
+  return $paths;
+}
+
+/**
  * Implements hook_permission()
  */
 function node_gallery_api_permission() {
@@ -1132,18 +1145,22 @@ function _node_gallery_api_gallery_view(&$node, $view_mode) {
   if ($view_mode == 'full') {
     // node_gallery_set_user_breadcrumb($node->uid, $node);
   }
-  list($view_name, $view_display) = explode(':', $config['view_modes'][$view_mode]['view']);
-  // @todo: we should be able to programmatically set some options on the view, such as number of images, filefield_name, etc.
-  $output = _node_gallery_api_views_embed_view($view_name, $view_display, $node->nid);
 
-  $node->content['node_gallery_view'] = array(
-    '#markup' => $output,
-    // '#label_display' => 'hidden',
-    '#access' => TRUE,
-    '#weight' => isset($extra_field_settings['node_gallery_view']['weight']) ? $extra_field_settings['node_gallery_view']['weight'] : 0,
-    // '#navigator' => node_gallery_get_item_navigator($node->ngid, $node->nid),
-    // '#item' => $node,
-  );
+  if (isset($config['view_modes'][$view_mode])) {
+    list($view_name, $view_display) = explode(':', $config['view_modes'][$view_mode]['view']);
+
+    // @todo: we should be able to programmatically set some options on the view, such as number of images, filefield_name, etc.
+    $output = _node_gallery_api_views_embed_view($view_name, $view_display, $node->nid);
+
+    $node->content['node_gallery_view'] = array(
+      '#markup' => $output,
+      // '#label_display' => 'hidden',
+      '#access' => TRUE,
+      '#weight' => isset($extra_field_settings['node_gallery_view']['weight']) ? $extra_field_settings['node_gallery_view']['weight'] : 0,
+      // '#navigator' => node_gallery_get_item_navigator($node->ngid, $node->nid),
+      // '#item' => $node,
+    );
+  }
 }
 
 /**

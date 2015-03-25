@@ -1,0 +1,6 @@
+base theme = neptune
+name = My Neptune
+description = neptune with small alterataions for pvsc
+core=7.x
+stylesheets[all][] = style.css
+stylesheets[all][] = my_neptune.css

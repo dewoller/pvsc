@@ -162,6 +162,10 @@ function node_gallery_api_install() {
  */
 function node_gallery_api_uninstall() {
   variable_del('node_gallery_api_keyboard_shortcuts');
+  variable_del('node_gallery_api_activate_image_downloading_permission');
+  variable_del('node_gallery_api_direct_image_downloading');
+  variable_del('node_gallery_api_display_exif_creation_date');
+  variable_del('node_gallery_api_activate_chronological_sorting_button');
   variable_del('node_gallery_api_plupload_integration');
   variable_del('node_gallery_api_plupload_manage_images_integration');
   variable_del('node_gallery_api_plupload_manage_images_limit');
