@@ -1,6 +1,39 @@
-base theme = neptune
-name = My Neptune
-description = neptune with small alterataions for pvsc
-core=7.x
-stylesheets[all][] = style.css
-stylesheets[all][] = my_neptune.css
+; The name, description, and screenshot used for this theme on the 'Appearance'
+; page ('/admin/appearance').
+name        = my_neptune
+description = local installation of neptune
+screenshot  = screenshot.png
+
+; This theme is compatible with Drupal 7 core and is a Zen sub-theme.
+core        = 7.x
+base theme  = neptune
+
+
+; Add our stylesheet.
+stylesheets[all][] = css/blank.css
+
+
+; Regions.
+regions[header]         = Header
+regions[navigation]     = Navigation bar
+regions[highlighted]    = Highlighted
+regions[help]           = Help
+regions[content]        = Content
+regions[sidebar_first]  = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[footer]         = Footer
+regions[bottom]         = Page bottom
+
+; The page_top and page_bottom regions are hidden, which means they will not
+; show up on the blocks administration page. But they are required in order for
+; the html.tpl.php to work properly, so do not delete them.
+regions[page_top]       = Page top
+regions[page_bottom]    = Page bottom
+
+
+; Information added by Drupal.org packaging script on 2014-04-06
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "neptune"
+datestamp = "1396807153"
+
